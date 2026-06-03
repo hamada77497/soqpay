@@ -26,20 +26,7 @@ export default function RootLayout({
             font-mono: ${GeistMono.variable};
           }
         `}</style>
-        {/* Pi Network SDK - Required for authentication and payments */}
         <script src="https://sdk.minepi.com/pi-sdk.js" async></script>
-        <script>
-          {`
-            window.piInitialized = false;
-            window.addEventListener('load', function() {
-              if (window.Pi && !window.piInitialized) {
-                window.piInitialized = true;
-                window.Pi.init({ version: '2.0', sandbox: true });
-                console.log('Pi SDK initialized from layout');
-              }
-            });
-          `}
-        </script>
       </head>
       <body>
         <AppWrapper>{children}</AppWrapper>
