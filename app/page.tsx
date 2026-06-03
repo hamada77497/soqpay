@@ -29,7 +29,7 @@ function usePiAuth() {
       
       const pi = (window as any).Pi;
       if (!pi) {
-        setAuthMessage('Pi SDK not loaded. Please use Pi Browser.');
+        setAuthMessage('Please open this app in Pi Browser');
         setHasError(true);
         return;
       }
@@ -143,7 +143,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
       <header className="border-b border-border bg-card sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-4">
@@ -167,32 +166,20 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-6">
         <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3 bg-secondary">
-            <TabsTrigger value="browse" className="text-base">
-              Browse
-            </TabsTrigger>
-            <TabsTrigger value="listings" className="text-base">
-              My Listings
-            </TabsTrigger>
-            <TabsTrigger value="sell" className="text-base">
-              Sell
-            </TabsTrigger>
+            <TabsTrigger value="browse" className="text-base">Browse</TabsTrigger>
+            <TabsTrigger value="listings" className="text-base">My Listings</TabsTrigger>
+            <TabsTrigger value="sell" className="text-base">Sell</TabsTrigger>
           </TabsList>
 
-          {/* Browse Tab */}
           <TabsContent value="browse" className="py-6">
             <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 rounded-lg p-6 mb-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                  <h3 className="text-lg font-bold text-foreground mb-1">
-                    Unlock Premium Marketplace Features
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Access advanced listing tools, analytics, and seller features to grow your business
-                  </p>
+                  <h3 className="text-lg font-bold text-foreground mb-1">Unlock Premium Marketplace Features</h3>
+                  <p className="text-sm text-muted-foreground">Access advanced listing tools, analytics, and seller features to grow your business</p>
                 </div>
                 <div className="w-full sm:w-auto">
                   <MarketplacePaymentButton size="lg" className="w-full sm:w-auto" />
@@ -208,18 +195,8 @@ export default function HomePage() {
             {items.length === 0 ? (
               <Empty
                 icon={
-                  <svg
-                    className="w-16 h-16 text-muted-foreground/30"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-                    />
+                  <svg className="w-16 h-16 text-muted-foreground/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                   </svg>
                 }
                 title="No items available"
@@ -228,38 +205,22 @@ export default function HomePage() {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {items.map((item) => (
-                  <ItemCard
-                    key={item.id}
-                    item={item}
-                    onViewDetails={setSelectedItem}
-                  />
+                  <ItemCard key={item.id} item={item} onViewDetails={setSelectedItem} />
                 ))}
               </div>
             )}
           </TabsContent>
 
-          {/* My Listings Tab */}
           <TabsContent value="listings" className="py-6">
             <div className="mb-4">
               <h2 className="text-2xl font-bold text-foreground mb-2">My Listings</h2>
               <p className="text-muted-foreground">Items you&apos;ve listed for sale</p>
             </div>
-
             {userListings.length === 0 ? (
               <Empty
                 icon={
-                  <svg
-                    className="w-16 h-16 text-muted-foreground/30"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
+                  <svg className="w-16 h-16 text-muted-foreground/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 }
                 title="No listings yet"
@@ -268,17 +229,12 @@ export default function HomePage() {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {userListings.map((item) => (
-                  <ItemCard
-                    key={item.id}
-                    item={item}
-                    onViewDetails={setSelectedItem}
-                  />
+                  <ItemCard key={item.id} item={item} onViewDetails={setSelectedItem} />
                 ))}
               </div>
             )}
           </TabsContent>
 
-          {/* Sell Tab */}
           <TabsContent value="sell" className="py-6">
             <div className="mb-6 bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 rounded-lg p-4">
               <p className="text-sm text-muted-foreground mb-3">
@@ -286,38 +242,18 @@ export default function HomePage() {
               </p>
               <MarketplacePaymentButton />
             </div>
-
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2">
-                <ListingForm 
-                  onSubmit={handleAddListing}
-                  seller={userName}
-                />
+                <ListingForm onSubmit={handleAddListing} seller={userName} />
               </div>
-
               <div className="bg-secondary rounded-lg p-4 h-fit">
                 <h3 className="font-semibold text-foreground mb-3">Selling Tips</h3>
                 <ul className="space-y-3 text-sm text-muted-foreground">
-                  <li className="flex gap-2">
-                    <span className="text-primary font-bold flex-shrink-0">•</span>
-                    <span>Write clear, descriptive titles</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-primary font-bold flex-shrink-0">•</span>
-                    <span>Include detailed descriptions</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-primary font-bold flex-shrink-0">•</span>
-                    <span>Price competitively</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-primary font-bold flex-shrink-0">•</span>
-                    <span>Be responsive to inquiries</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-primary font-bold flex-shrink-0">•</span>
-                    <span>Maintain accurate inventory</span>
-                  </li>
+                  <li className="flex gap-2"><span className="text-primary font-bold flex-shrink-0">•</span><span>Write clear, descriptive titles</span></li>
+                  <li className="flex gap-2"><span className="text-primary font-bold flex-shrink-0">•</span><span>Include detailed descriptions</span></li>
+                  <li className="flex gap-2"><span className="text-primary font-bold flex-shrink-0">•</span><span>Price competitively</span></li>
+                  <li className="flex gap-2"><span className="text-primary font-bold flex-shrink-0">•</span><span>Be responsive to inquiries</span></li>
+                  <li className="flex gap-2"><span className="text-primary font-bold flex-shrink-0">•</span><span>Maintain accurate inventory</span></li>
                 </ul>
               </div>
             </div>
@@ -325,54 +261,26 @@ export default function HomePage() {
         </Tabs>
       </main>
 
-      {/* Item Details Modal */}
       {selectedItem && (
-        <div 
-          className="fixed inset-0 bg-black/50 flex items-end z-50 sm:items-center"
-          onClick={() => setSelectedItem(null)}
-        >
-          <div 
-            className="bg-background w-full sm:w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl p-6 space-y-4"
-            onClick={(e) => e.stopPropagation()}
-          >
+        <div className="fixed inset-0 bg-black/50 flex items-end z-50 sm:items-center" onClick={() => setSelectedItem(null)}>
+          <div className="bg-background w-full sm:w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
             <div className="flex justify-between items-start">
               <div>
                 <h3 className="text-2xl font-bold text-foreground">{selectedItem.title}</h3>
                 <p className="text-sm text-muted-foreground mt-1">By {selectedItem.seller}</p>
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setSelectedItem(null)}
-                className="text-muted-foreground"
-              >
-                ✕
-              </Button>
+              <Button variant="ghost" size="sm" onClick={() => setSelectedItem(null)} className="text-muted-foreground">✕</Button>
             </div>
-
             <p className="text-muted-foreground">{selectedItem.description}</p>
-
             <div className="border-t border-border pt-4">
               <p className="text-sm text-muted-foreground mb-2">Price</p>
               <p className="text-3xl font-bold text-primary">π {selectedItem.price.toFixed(2)}</p>
             </div>
-
             <div className="grid grid-cols-2 gap-3">
-              <Button 
-                variant="outline"
-                onClick={() => setSelectedItem(null)}
-              >
-                Cancel
-              </Button>
+              <Button variant="outline" onClick={() => setSelectedItem(null)}>Cancel</Button>
               <div className="flex flex-col gap-2">
-                <Button 
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                >
-                  Buy Now
-                </Button>
-                <div className="mt-1">
-                  <MarketplacePaymentButton size="sm" variant="outline" />
-                </div>
+                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">Buy Now</Button>
+                <div className="mt-1"><MarketplacePaymentButton size="sm" variant="outline" /></div>
               </div>
             </div>
           </div>
