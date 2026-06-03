@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePiAuth } from '@/contexts/pi-auth-context';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AuthLoadingScreen } from '@/components/auth-loading-screen';
@@ -10,26 +9,58 @@ import { ListingForm } from '@/components/listing-form';
 import { Empty } from '@/components/ui/empty';
 import { MarketplacePaymentButton } from '@/components/marketplace-payment-button';
 
-// ============================================================================
-// Pi Network SDK Initialization
-// ============================================================================
-// The following code initializes the Pi SDK in sandbox mode for testing.
-// This allows you to make test payments using Test-Pi without real funds.
-// When ready for production, change sandbox: true to sandbox: false.
-// ============================================================================
-if (typeof window !== 'undefined') {
-  const pi = (window as any).Pi;
-  if (pi) {
-    pi.init({
-      version: '2.0',
-      sandbox: true,  // Set to false for production
-    });
-    console.log('[Pi SDK] Initialized successfully in sandbox mode');
-  } else {
-    console.warn('[Pi SDK] Pi SDK script not loaded yet');
-  }
+// ========== Pi Authentication Hook ==========
+function usePiAuth() {
+  const [user, setUser] = useState<any>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authMessage, setAuthMessage] = useState('Connecting to Pi Network...');
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    const authenticate = async () => {
+      if (typeof window === 'undefined') return;
+      
+      // Wait for Pi SDK to load
+      let attempts = 0;
+      while (!(window as any).Pi && attempts < 20) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+        attempts++;
+      }
+      
+      const pi = (window as any).Pi;
+      if (!pi) {
+        setAuthMessage('Pi SDK not loaded. Please use Pi Browser.');
+        setHasError(true);
+        return;
+      }
+
+      try {
+        setAuthMessage('Initializing Pi SDK...');
+        pi.init({ version: '2.0', sandbox: true });
+        
+        setAuthMessage('Requesting authentication...');
+        const scopes = ['username', 'payments'];
+        const auth = await pi.authenticate(scopes, (payment: any) => {
+          console.log('Incomplete payment found:', payment);
+        });
+        
+        setUser(auth.user);
+        setIsAuthenticated(true);
+        setAuthMessage(`Welcome ${auth.user.username}!`);
+        setHasError(false);
+      } catch (err: any) {
+        console.error('Auth error:', err);
+        setAuthMessage(err.message || 'Authentication failed. Please try again.');
+        setHasError(true);
+      }
+    };
+
+    authenticate();
+  }, []);
+
+  return { user, isAuthenticated, authMessage, hasError };
 }
-// ============================================================================
+// ==========================================
 
 export default function HomePage() {
   const { isAuthenticated, authMessage, hasError } = usePiAuth();
@@ -153,7 +184,6 @@ export default function HomePage() {
 
           {/* Browse Tab */}
           <TabsContent value="browse" className="py-6">
-            {/* Marketplace Payment Banner */}
             <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 rounded-lg p-6 mb-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
@@ -265,7 +295,6 @@ export default function HomePage() {
                 />
               </div>
 
-              {/* Tips Section */}
               <div className="bg-secondary rounded-lg p-4 h-fit">
                 <h3 className="font-semibold text-foreground mb-3">Selling Tips</h3>
                 <ul className="space-y-3 text-sm text-muted-foreground">
